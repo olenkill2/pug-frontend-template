@@ -1,9 +1,12 @@
 html
 	head
-		include ../components/pagehead.pug
-		title My Site - #{title}
+		include ../blocks/pagehead.pug
 	body
+		block header
+			include ../blocks/header.pug
+
 		block content
-		block foot
-			#footer
-			p some footer content
+			| контент
+
+		block footer
+			include ../blocks/footer.pug

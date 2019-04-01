@@ -28,6 +28,7 @@ gulp.task('sass', function() {
 	.pipe(browserSync.reload({stream: true}))
 });
 
+// файлы для сборки
 var jsFiles = [
 	'node_modules/jquery/dist/jquery.min.js',
 	'js/main.js',
@@ -45,12 +46,13 @@ gulp.task('scripts-build', function() {
 	return gulp.src(jsFiles)
 		.pipe(babel({
 			presets: ['@babel/preset-env']
-		}))
+		})) // транспалируем из es6
 		.pipe(concat('main.min.js'))
 		.pipe(uglify()) // Сжимаем JS файл
 		.pipe(gulp.dest('js')); // Выгружаем в папку app/js
 });
 
+// приводим впорядок скомпилированный код после pug-a
 gulp.task('htmlbeautify', function() {
 	var options = {
 		indentSize: 4,
@@ -71,13 +73,14 @@ gulp.task('htmlbeautify', function() {
 		.pipe(gulp.dest('./'));
 });
 
+// компиляция pug файлов
 gulp.task('pug', function() {
-  return gulp.src("./src/**/*.pug")
-      .pipe(plumber())
-      .pipe(pug())
-      .pipe(htmlbeautify())
-      .pipe(gulp.dest("./"))
-      .pipe(browserSync.stream());
+	return gulp.src("./src/*.pug")
+		.pipe(plumber())
+		.pipe(pug())
+		.pipe(htmlbeautify())
+		.pipe(gulp.dest("./"))
+		.pipe(browserSync.stream());
 });
 
 // таск для обновления страницы
@@ -131,7 +134,8 @@ gulp.task('img', function() {
 	.pipe(gulp.dest('img/')) // куда класть сжатые картинки
 });
 
-gulp.task('build', ['scripts-build', 'img'])
+// сборка проекта
+gulp.task('build', ['sass', 'pug', 'scripts-build', 'img'])
 
 // основной таск, который запускает вспомогательные
 gulp.task('default', ['browser-sync','watch', 'sass', 'pug', 'scripts']);

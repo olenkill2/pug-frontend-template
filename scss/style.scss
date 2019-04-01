@@ -6,10 +6,13 @@
 @import 'base/typography';
 @import 'base/controls';
 
-/* components */
-@import 'components/header';
-@import 'components/footer';
+/* layouts */
+@import 'layouts/default';
+@import 'layouts/index';
 
+/* blocks */
+@import 'blocks/header';
+@import 'blocks/footer';
 
 body
 {

@@ -3,7 +3,8 @@
 /* base */
 /*  Переменные со шрифтами  */
 /*  Переменные с гарнитурами шрифтов  */
-/*  основные цвета  */
+/*  Основные цвета  */
+/* Разрешения */
 @font-face {
   font-family: 'a_lcdnovaregular';
   src: url("../fonts/a_lcdnova-webfont.eot");
@@ -448,7 +449,8 @@ a:focus {
   line-height: 25px;
   margin: 0; }
 
-/* components */
+/* layouts */
+/* blocks */
 .footer-bot {
   background-color: gray;
   background: #192633;
