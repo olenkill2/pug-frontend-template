@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	@@include('./components/pagehead.html')
+	<style>
+		.pages-item
+		{
+			padding-bottom: 20px;
+			margin-bottom: 40px;
+			border-bottom: 2px solid rgb(0,0,0, 0.2);
+		}
+		.pages-item:last-child
+		{
+			margin-bottom: 0;
+			border: none;
+		}
+		.pages-item__link
+		{
+			font-size: 18px;
+			color: #191C21;
+			border-bottom: 1px solid #191C21;
+			text-transform: uppercase;
+		}
+		.pages-item__descr
+		{
+			margin-top: 8px;
+			margin-bottom: 0;
+		}
+		.pages-header
+		{
+			padding-top: 100px;
+			padding-bottom: 40px;
+		}
+	</style>
+</head>
+<body>
+	@@include('./components/header.html')
+	<div class="container" style="max-width: 800px; min-height: 100vh; padding-bottom: 50px;">
+		<h1 class="h1-style pages-header">
+			Страницы верстки проекта "название проекта"
+		</h1>
+		<div class="pages">
+			<div class="pages-item">
+				<a href="#" class="pages-item__link">Главная</a>
+				<p class="pages-item__descr">main-page. "штука-нейм" заработает, когда будет "другая штука-нейм"</p>
+			</div>
+			<div class="pages-item">
+				<a href="#" class="pages-item__link">Детальная</a>
+				<p class="pages-item__descr">При скролле добавляются картиночки, контент настраивается из админки</p>
+			</div>
+			<div class="pages-item">
+				<a href="#" class="pages-item__link">Контакты</a>
+				<p class="pages-item__descr">Координаты офисов будут задавать из админки, для примера вставили несколько точек</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

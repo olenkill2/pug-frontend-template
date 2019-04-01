@@ -1,0 +1,56 @@
+/* ********************** */
+/* base */
+@import 'base/variables';
+@import 'base/fonts';
+@import 'base/normalize';
+@import 'base/typography';
+@import 'base/controls';
+
+/* components */
+@import 'components/header';
+@import 'components/footer';
+
+
+body
+{
+	min-width: 375px;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	outline: 0;
+}
+
+*:before,
+*:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.clearfix:after,
+.row:after
+{
+	content: " ";
+	display: table;
+	clear: both;
+}
+
+.container
+{
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+@media (max-width: 1200px)
+{
+	.container
+	{
+		max-width: 1140px;
+	}
+}
