@@ -17,6 +17,7 @@ var gulp             = require('gulp'),
 	imageminGiflossy = require('imagemin-giflossy'),
 	pug              = require('gulp-pug'),
 	plumber          = require('gulp-plumber'),
+	svgSymbols       = require('gulp-svg-symbols'),
 	htmlbeautify     = require('gulp-html-beautify');
 
 // таск для компиляции scss в css
@@ -40,6 +41,65 @@ gulp.task('scripts', function() {
 		.pipe(concat('main.min.js'))
 		.pipe(gulp.dest('js')); // Выгружаем в папку app/js
 });
+
+gulp.task('demo', function () {
+	console.log(svgSymbols());
+	// return gulp.src('img/svg-for-sprite/*.svg')
+	// 	.pipe(svgSymbols.demoPage())
+	// 	.pipe(gulp.dest('./'));
+});
+
+gulp.task('sprites', function() {
+	return gulp
+		.src('img/svg-for-sprite/*.svg')
+		.pipe(
+			svgSymbols(
+			{
+				svgAttrs: { class: 'svg-symbol', },
+				icons: [
+				{
+					id: `string`,
+					class: `.string`,
+					width: `a number as a string with a unit`,
+					height: `a number as a string with a unit`,
+					style: `string if exists`,
+					svg: {
+						name: `string (svg filename without extension)`,
+						id: `string`,
+						width: `number`,
+						height: `number`,
+						content: `the svg markup as a string`,
+						viewBox: `string`,
+					//   originalAttributes: {
+					// 	 every attributes before processing them
+					},
+				}],
+				transformData: function(svg, defaultData, options) {
+					console.log(svg, options);
+				  /******
+				  svg is same object as the one passed to the templates (see above)
+
+				  defaultData are the ones needed by default templates
+				  see /lib/get-default-data.js
+
+				  options are the one you have set in your gulpfile,
+				    minus templates & transformData
+				  *******/
+
+				  return {
+				    // Return every datas you need
+				    id:         defaultData.id,
+				    class:      defaultData.class,
+				    width:      `${svg.width}em`,
+				    height:     `${svg.height}em`
+				  };
+				}
+
+			})
+		)
+		.pipe(gulp.dest('img/'))
+})
+
 
 // таск для сборки, транспалирования и сжатия скриптов
 gulp.task('scripts-build', function() {
@@ -98,6 +158,8 @@ gulp.task('watch', function() {
 	gulp.watch('scss/**/*.scss',['sass']);
 	gulp.watch(['src/*.pug','src/**/*.pug'],['pug']);
 	gulp.watch(['js/vendors/*.js', 'js/main.js', 'js/modules/*.js'],['scripts']);
+	gulp.watch('img/**/*.svg', ['sprites']);
+	gulp.watch('img/*', browserSync.reload);
 	gulp.watch('src/*.html', browserSync.reload);
 	gulp.watch('**/*.html', browserSync.reload);
 	gulp.watch('js/*.js', browserSync.reload);

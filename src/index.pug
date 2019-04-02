@@ -3,3 +3,13 @@ extends layouts/default.pug
 block content
 	.container
 		p 12 0212321
+	.icon
+		svg.miner
+			use(xlink:href="#miner")
+	.icon
+		svg.miner
+			use(xlink:href="#n-icon")
+	.icon
+		svg.miner()
+			use(xlink:href="#arrow-down")
+	include ../img/svg-symbols.svg
