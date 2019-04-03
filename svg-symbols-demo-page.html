@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 Symbols</title>
+  <meta name="viewport" content="width=device-width" />
+  <style>
+    html {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      color: black;
+      background: #e4e4e4;
+      text-align: center;
+    }
+    body {
+      margin: 0;
+      padding-top: 2.5rem;
+    }
+    main {
+      padding: 1rem .5rem;
+    }
+    button {
+      font: inherit;
+      background: transparent;
+      border: none;
+    }
+    button::-moz-focus-inner {
+      padding: 0;
+      border: none;
+    }
+    .symbols-dictionary {
+      border: 0 !important;
+      clip: rect(0 0 0 0) !important;
+      height: 1px !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      position: absolute !important;
+      width: 1px !important;
+    }
+    .gss-toolbar {
+      position: absolute;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      border-bottom: solid 1px #c6c6c6;
+      text-align: left;
+      background: white;
+    }
+    .gss-toolbar--active {
+      position: fixed;
+    }
+    .gss-toolbar > * {
+      display: inline-block;
+      vertical-align: middle;
+      white-space: nowrap;
+      margin: 0;
+      padding: .5rem 1rem;
+      line-height: 1.35;
+    }
+    .gss-toolbar h1 {
+      display: none;
+      font: inherit;
+    }
+    .gss-toolbar:not(.gss-toolbar--active) h1 {
+      display: inline-block;
+    }
+    .gss-toolbar:not(.gss-toolbar--active) h1 ~ * {
+      display: none !important;
+    }
+    .gss-toolbar.gss-toolbar > * + * {
+      border-left: solid 1px #c6c6c6;
+    }
+    .gss-toolbar > *:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 1px #c71585;
+    }
+    .gss-toolbar [hidden] {
+      display: none;
+    }
+    .gss-toolbar-filter {
+      width: 15rem;
+      flex-grow: 10;
+      border: none;
+      font: inherit;
+    }
+    .gss-toolbar button {
+      position: relative;
+      z-index: 1;
+      font-size: 87.5%;
+      background-color: #f4f4f4;
+    }
+    .gss-toolbar-filter + button {
+      margin-left: auto;
+    }
+    .gss-toolbar button[aria-pressed="true"] {
+      z-index: 2;
+      color: #ddd;
+      background-color: #444;
+      outline-color: rgba(255,255,255,.6);
+    }
+    .gss-toolbar .gss-toolbar-list {
+      font-size: 100%;
+    }
+    .gss-toolbar button > svg {
+      fill: currentColor;
+      vertical-align: -2px;
+      margin: 0 4px 0 2px;
+    }
+    .gss-toolbar-list[aria-pressed="true"] ~ .gss-toolbar-orig {
+      display: none;
+    }
+    @media (max-width: 40em) {
+      .gss-toolbar-filter {
+        margin-left: 0 !important;
+      }
+      .gss-toolbar-filter ~ * {
+        display: none !important;
+      }
+    }
+
+    /* Grid of small icons */
+    .gss-iconlist ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: center;
+      min-height: calc(100vh - 100px);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .gss-iconlist-item {
+      display: inline-block;
+      vertical-align: top;
+      margin: .5rem;
+    }
+    .gss-iconlist-item a {
+      display: block;
+      box-sizing: border-box;
+      min-height: 100%;
+      border-radius: .35em;
+      padding: .5rem;
+      color: inherit;
+      background-color: #fff;
+      transition: all 100ms;
+    }
+    .gss-iconlist-item a:hover,
+    .gss-iconlist-item a:focus {
+      outline: none;
+      color: #fff;
+      background-color: rgba(0,0,0,.8);
+    }
+    .gss-iconlist-item a > svg {
+      width: 2.75rem;
+      height: 2.75rem;
+      vertical-align: top;
+      fill: currentColor;
+    }
+    @media (min-width: 40em) {
+      .gss-iconlist-item a > svg {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+    }
+
+    /* Grid of big icons with lots of info */
+    .gss-iconboxes {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+    .gss-iconboxes[hidden] {
+      display: none;
+    }
+    .gss-iconboxes::after {
+      content: '';
+      flex-grow: 1000;
+    }
+    .gss-iconbox {
+      display: inline-block;
+      vertical-align: top;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      width: calc(100% - 1rem);
+      max-width: 40rem;
+      overflow: hidden;
+      margin: .5rem;
+      border-radius: .5rem;
+      background-color: #fff;
+    }
+    .gss-iconbox:focus {
+      outline: none;
+      box-shadow: 0 0 0 4px #e960b2;
+    }
+    .gss-iconbox[data-state="info"] {
+      background: #f4f4f4;
+    }
+    @media (min-width:40em) {
+      .gss-iconbox { width: calc(50% - 1rem); }
+    }
+    @media (min-width:60em) {
+      .gss-iconbox { width: calc(33.33% - 1rem); }
+    }
+    @media (min-width:80em) {
+      .gss-iconbox { width: calc(25% - 1rem); }
+    }
+    @media (min-width:100em) {
+      main { width: 105rem; max-width: calc(100% - 1rem); margin: 0 auto; }
+      .gss-iconbox { width: calc(20% - 1rem); }
+    }
+    .gss-iconbox-header,
+    .gss-iconbox-head2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      padding: 0 .5rem;
+      font-size: 87.5%;
+      color: #444;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .gss-iconbox-header {
+      background-color: #fff;
+    }
+    .gss-iconbox[data-state="info"] .gss-iconbox-header,
+    .gss-iconbox:not([data-state="info"]) .gss-iconbox-head2 {
+      display: none;
+    }
+    .gss-iconbox-header > *,
+    .gss-iconbox-head2 > * {
+      display: inline-block;
+      white-space: nowrap;
+      padding: .75rem .5rem;
+    }
+    .gss-iconbox-head2 > :nth-child(1) {
+      margin-right: auto;
+      text-align: left;
+    }
+    .gss-iconbox-header h2 {
+      position: relative;
+      top: -1px;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+      margin: 0;
+      font: inherit;
+      font-size: 115%;
+      line-height: 1;
+      color: black;
+    }
+    .gss-iconbox-header > span {
+      color: #777;
+    }
+    .gss-iconbox-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 8rem;
+    }
+    .gss-iconbox:not([data-state="info"]) .gss-iconbox-wrapper {
+      background-color: #fafafa;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgb(238,238,238)" width="100" height="100"><rect x="0" y="0" width="50" height="50"></rect><rect x="50" y="50" width="50" height="50"></rect></svg>');
+      background-size: 24px 24px;
+    }
+    @media (min-width:40em) {
+      .gss-iconbox-wrapper { min-height: 10rem; }
+    }
+    .gss-iconbox-icon {
+      padding: 1rem;
+    }
+    .gss-iconbox[data-state="info"] .gss-iconbox-icon {
+      display: none;
+    }
+    .gss-iconbox-icon > svg {
+      fill: currentColor;
+      vertical-align: middle;
+      width: 6rem;
+      height: 6rem;
+      max-width: 16rem;
+      max-height: 16rem;
+    }
+    @media (min-width:40em) {
+      .gss-iconbox-icon > svg {
+        width: 8rem;
+        height: 8rem;
+      }
+    }
+    .gss-showColor svg[id^="gss-icon-"] {
+      color: red;
+      fill: red;
+    }
+    .gss-showOriginal .gss-iconbox-icon > svg {
+      margin-top: 1rem;
+      outline: solid 1px rgba(0,0,0,.5);
+      box-shadow: 0 0 0 250px rgba(255,255,255,.8);
+    }
+    @media (min-resolution: 2dppx) {
+      .gss-showOriginal .gss-iconbox-icon > svg {
+        outline-width: .5px;
+      }
+    }
+    .gss-showOriginal .gss-iconbox-icon::after {
+      content: attr(data-dimensions);
+      display: table;
+      margin: .5rem auto 0;
+      padding: 1px 3px;
+      font-size: 75%;
+      color: #444;
+    }
+    .gss-iconbox-code {
+      flex-grow: 1;
+      margin: 0;
+      padding: 1rem;
+      text-align: left;
+      font: inherit;
+      line-height: 1.35;
+      background-color: #f4f4f4;
+    }
+    .gss-iconbox-code code {
+      display: block;
+      white-space: pre-wrap;
+      font-family: monospace, monospace;
+      font-size: 80%;
+    }
+    /* can't display none: copy won't work */
+    .gss-iconbox[data-state="icon"] .gss-iconbox-code {
+      position: absolute;
+      top: -200px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .gss-iconbox-action {
+      display: none;
+      border-top: 1px solid #e6e6e6;
+    }
+    .gss-iconbox[data-state] .gss-iconbox-action {
+      display: block;
+      display: flex;
+    }
+    .gss-iconbox-action > * {
+      flex-grow: 1;
+      flex-basis: 33.3%;
+      padding: .8rem .5rem;
+      border: 0;
+      font: inherit;
+      font-size: 87.5%;
+      color: #444;
+      background: none;
+    }
+    .gss-iconbox-action > * + * {
+      border-left: 1px solid #e6e6e6;
+    }
+    .gss-iconbox-action button {
+      cursor: pointer;
+      outline: none;
+    }
+    .gss-iconbox-action button:hover,
+    .gss-iconbox-action button:focus {
+      color: #c71585;
+    }
+    .gss-iconbox-action button:focus {
+      outline: solid 1px;
+      outline-offset: -6px;
+    }
+    .gss-iconbox-action button:active {
+      color: black;
+    }
+  </style>
+  <style>
+    .gss-showOriginal .gss-iconbox #gss-icon-about-iis-1 {
+      width: 81px;
+      height: 20px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-about-iis-2 {
+      width: 81px;
+      height: 24px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-about-iis-3 {
+      width: 84px;
+      height: 55px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-alrosa-5 {
+      width: 47px;
+      height: 26px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-arrow-up {
+      width: 16px;
+      height: 9px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-bristol-13 {
+      width: 35px;
+      height: 30px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-case-doc {
+      width: 30px;
+      height: 36px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-case-percent {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .gss-showOriginal .gss-iconbox #gss-icon-chat-3 {
+      width: 31.99px;
+      height: 31.99px;
+    }
+    .cls-2{fill:#ec231a}
+
+    
+  </style>
+  <style class="gss-filter-css"></style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" class="symbols-dictionary">
+  <defs>
+    false
+  </defs>
+  
+  <symbol id="about-iis-1" viewBox="0 0 81 20">
+     <circle cx="10" cy="10" r="8.5" stroke="#E2231A" stroke-width="3"/> <circle cx="41" cy="10" r="8.5" stroke="#E2231A" stroke-width="3"/> <circle cx="71" cy="10" r="8.5" stroke="#E2231A" stroke-width="3"/> 
+  </symbol>
+  <symbol id="about-iis-2" viewBox="0 0 81 24">
+     <path fill="#E2231A" d="M9.119 4.633v6.99h6.752v2.21H9.119v7.04h-2.4v-7.04H0v-2.21h6.719v-6.99h2.4zm12.547 16.862h5.08V5.501c0-.459.017-.944.05-1.457l-4.22 3.585c-.144.12-.287.196-.43.23a1.21 1.21 0 0 1-.398 0 1.036 1.036 0 0 1-.347-.132.875.875 0 0 1-.232-.213l-.927-1.26L27.31.213h2.4v21.282h4.667v2.227h-12.71v-2.227zM46.624 0c1.005 0 1.931.142 2.78.426.85.283 1.578.687 2.185 1.211a5.448 5.448 0 0 1 1.44 1.9c.342.741.513 1.565.513 2.471 0 .742-.1 1.408-.298 1.997a4.717 4.717 0 0 1-.827 1.54 4.88 4.88 0 0 1-1.291 1.113 7.287 7.287 0 0 1-1.705.736c1.545.404 2.703 1.08 3.476 2.03.783.95 1.175 2.14 1.175 3.57 0 1.08-.21 2.051-.63 2.913a6.554 6.554 0 0 1-1.687 2.21 7.796 7.796 0 0 1-2.516 1.392 9.616 9.616 0 0 1-3.061.475c-1.258 0-2.334-.153-3.227-.459-.894-.316-1.65-.747-2.268-1.293a6.894 6.894 0 0 1-1.522-1.932 14.715 14.715 0 0 1-1.01-2.44l1.275-.523c.33-.142.65-.18.96-.115.32.066.551.246.694.54.144.306.32.672.53 1.098.22.425.519.834.894 1.227.375.393.85.726 1.423.999.585.273 1.324.41 2.218.41.827 0 1.55-.132 2.168-.394.628-.273 1.147-.622 1.555-1.047.42-.426.734-.9.944-1.425.21-.524.314-1.042.314-1.555a5.74 5.74 0 0 0-.248-1.735 2.903 2.903 0 0 0-.927-1.36c-.452-.381-1.076-.681-1.87-.9-.784-.218-1.793-.327-3.029-.327v-2.112c1.015-.01 1.876-.12 2.582-.327.717-.208 1.296-.491 1.738-.852.452-.36.778-.79.976-1.293.21-.502.315-1.058.315-1.67 0-.676-.11-1.266-.331-1.768a3.318 3.318 0 0 0-.877-1.244 3.708 3.708 0 0 0-1.341-.737 5.364 5.364 0 0 0-1.655-.245c-.596 0-1.153.087-1.671.262-.508.174-.96.42-1.357.736a4.25 4.25 0 0 0-.977 1.097 4.392 4.392 0 0 0-.563 1.408c-.143.382-.325.639-.546.77-.21.12-.518.152-.926.098l-1.54-.262c.155-1.07.453-2.014.894-2.832a6.812 6.812 0 0 1 1.672-2.08 7.184 7.184 0 0 1 2.333-1.26A8.934 8.934 0 0 1 46.624 0zm21.252 5.926c0 .917-.143 1.741-.43 2.472a5.56 5.56 0 0 1-1.158 1.834 4.853 4.853 0 0 1-1.672 1.13 5.155 5.155 0 0 1-2.002.392c-.74 0-1.429-.13-2.069-.393a4.853 4.853 0 0 1-1.671-1.13c-.464-.501-.828-1.112-1.093-1.833-.264-.73-.397-1.555-.397-2.472 0-.938.133-1.773.397-2.504.265-.732.63-1.348 1.093-1.85A4.75 4.75 0 0 1 60.545.426a5.407 5.407 0 0 1 2.069-.393c.75 0 1.445.13 2.085.393.64.262 1.197.644 1.671 1.146.475.502.844 1.118 1.11 1.85.264.73.396 1.566.396 2.504zm-2.283 0c0-.72-.078-1.331-.232-1.833-.155-.502-.37-.912-.645-1.228a2.257 2.257 0 0 0-.944-.704 3.162 3.162 0 0 0-1.158-.213c-.408 0-.79.071-1.142.213a2.281 2.281 0 0 0-.927.704c-.265.316-.474.726-.629 1.228-.154.502-.231 1.113-.231 1.833 0 .71.077 1.315.231 1.818.155.49.364.894.63 1.211.264.306.573.53.926.671.353.131.733.197 1.142.197.408 0 .794-.066 1.158-.197.364-.142.679-.365.944-.671.275-.317.49-.72.645-1.211.154-.503.232-1.108.232-1.818zM76.267.753c.11-.13.237-.245.38-.344.155-.098.36-.147.613-.147h2.135L62.05 23.247c-.1.142-.226.256-.38.344a1.127 1.127 0 0 1-.563.13H58.94L76.267.754zM81 18.188c0 .917-.143 1.736-.43 2.456a5.56 5.56 0 0 1-1.159 1.834 4.855 4.855 0 0 1-1.671 1.13 5.157 5.157 0 0 1-2.003.392 5.45 5.45 0 0 1-2.085-.393 4.893 4.893 0 0 1-1.655-1.13c-.463-.502-.827-1.113-1.092-1.833-.265-.72-.397-1.539-.397-2.456 0-.938.132-1.773.397-2.504.265-.743.629-1.365 1.092-1.867a4.787 4.787 0 0 1 1.655-1.146 5.452 5.452 0 0 1 2.085-.393c.74 0 1.43.131 2.069.393a4.56 4.56 0 0 1 1.672 1.146c.474.502.844 1.124 1.108 1.867.276.73.414 1.566.414 2.504zm-2.284 0c0-.72-.077-1.331-.231-1.833-.155-.513-.37-.928-.646-1.245a2.313 2.313 0 0 0-.943-.687 3.162 3.162 0 0 0-1.159-.213c-.408 0-.794.071-1.158.213a2.337 2.337 0 0 0-.927.688c-.265.316-.474.73-.629 1.244-.143.502-.215 1.113-.215 1.833 0 .71.072 1.31.215 1.801.155.491.364.895.63 1.212.264.305.573.529.926.67.364.132.75.197 1.158.197.409 0 .795-.065 1.159-.196.364-.142.678-.366.943-.671.276-.317.491-.72.645-1.212.155-.491.232-1.091.232-1.8z"/> 
+  </symbol>
+  <symbol id="about-iis-3" viewBox="0 0 84 55">
+     <path fill="#E2231A" d="M7.974 9.347h1.953v.918c0 .096-.03.177-.09.243-.054.066-.141.099-.261.099H7.974V14H6.57v-3.393H.846a.518.518 0 0 1-.315-.099.483.483 0 0 1-.162-.261l-.162-.819L6.48 1.103h1.494v8.244zM6.57 4.028c0-.156.003-.324.009-.504a6.3 6.3 0 0 1 .063-.567l-4.698 6.39H6.57V4.028zm13.771 3.528c0 1.128-.123 2.106-.369 2.934-.24.822-.57 1.503-.99 2.043-.42.54-.918.942-1.494 1.206a4.315 4.315 0 0 1-1.836.396c-.66 0-1.275-.132-1.845-.396a4.027 4.027 0 0 1-1.476-1.206c-.42-.54-.75-1.221-.99-2.043-.24-.828-.36-1.806-.36-2.934 0-1.128.12-2.106.36-2.934.24-.828.57-1.512.99-2.052.42-.546.912-.951 1.476-1.215a4.336 4.336 0 0 1 1.845-.396c.654 0 1.266.132 1.836.396a3.954 3.954 0 0 1 1.494 1.215c.42.54.75 1.224.99 2.052.246.828.37 1.806.37 2.934zm-1.665 0c0-.984-.084-1.809-.252-2.475-.162-.672-.384-1.212-.666-1.62-.276-.408-.597-.699-.963-.873a2.56 2.56 0 0 0-2.286 0c-.366.174-.687.465-.963.873-.276.408-.498.948-.666 1.62-.162.666-.243 1.491-.243 2.475s.081 1.809.243 2.475c.168.666.39 1.203.666 1.611.276.408.597.702.963.882a2.632 2.632 0 0 0 2.286 0c.366-.18.687-.474.963-.882.282-.408.504-.945.666-1.611.168-.666.252-1.491.252-2.475zm12.107 0c0 1.128-.123 2.106-.37 2.934-.24.822-.57 1.503-.99 2.043-.42.54-.917.942-1.493 1.206a4.315 4.315 0 0 1-1.836.396c-.66 0-1.275-.132-1.845-.396a4.027 4.027 0 0 1-1.476-1.206c-.42-.54-.75-1.221-.99-2.043-.24-.828-.36-1.806-.36-2.934 0-1.128.12-2.106.36-2.934.24-.828.57-1.512.99-2.052.42-.546.912-.951 1.476-1.215a4.336 4.336 0 0 1 1.845-.396c.654 0 1.266.132 1.836.396a3.954 3.954 0 0 1 1.494 1.215c.42.54.75 1.224.99 2.052.246.828.369 1.806.369 2.934zm-1.665 0c0-.984-.084-1.809-.252-2.475-.162-.672-.384-1.212-.666-1.62-.276-.408-.597-.699-.963-.873a2.56 2.56 0 0 0-2.286 0c-.366.174-.687.465-.963.873-.276.408-.498.948-.666 1.62-.162.666-.243 1.491-.243 2.475s.08 1.809.243 2.475c.168.666.39 1.203.666 1.611.276.408.597.702.963.882a2.632 2.632 0 0 0 2.286 0c.366-.18.687-.474.963-.882.282-.408.504-.945.666-1.611.168-.666.252-1.491.252-2.475zm14.912 0c0 1.128-.123 2.106-.37 2.934-.24.822-.57 1.503-.99 2.043-.42.54-.917.942-1.493 1.206a4.315 4.315 0 0 1-1.836.396c-.66 0-1.275-.132-1.845-.396a4.027 4.027 0 0 1-1.476-1.206c-.42-.54-.75-1.221-.99-2.043-.24-.828-.36-1.806-.36-2.934 0-1.128.12-2.106.36-2.934.24-.828.57-1.512.99-2.052.42-.546.912-.951 1.476-1.215A4.336 4.336 0 0 1 39.34.959c.654 0 1.266.132 1.836.396A3.954 3.954 0 0 1 42.67 2.57c.42.54.75 1.224.99 2.052.246.828.369 1.806.369 2.934zm-1.665 0c0-.984-.084-1.809-.252-2.475-.162-.672-.384-1.212-.666-1.62-.276-.408-.597-.699-.963-.873a2.559 2.559 0 0 0-2.286 0c-.366.174-.687.465-.963.873-.276.408-.498.948-.666 1.62-.162.666-.243 1.491-.243 2.475s.08 1.809.243 2.475c.168.666.39 1.203.666 1.611.276.408.597.702.963.882a2.632 2.632 0 0 0 2.286 0c.366-.18.687-.474.963-.882.282-.408.504-.945.666-1.611.168-.666.252-1.491.252-2.475zm12.106 0c0 1.128-.123 2.106-.369 2.934-.24.822-.57 1.503-.99 2.043-.42.54-.918.942-1.494 1.206a4.315 4.315 0 0 1-1.836.396c-.66 0-1.275-.132-1.845-.396a4.027 4.027 0 0 1-1.476-1.206c-.42-.54-.75-1.221-.99-2.043-.24-.828-.36-1.806-.36-2.934 0-1.128.12-2.106.36-2.934.24-.828.57-1.512.99-2.052.42-.546.912-.951 1.476-1.215a4.336 4.336 0 0 1 1.845-.396c.654 0 1.266.132 1.836.396a3.954 3.954 0 0 1 1.494 1.215c.42.54.75 1.224.99 2.052.246.828.369 1.806.369 2.934zm-1.665 0c0-.984-.084-1.809-.252-2.475-.162-.672-.384-1.212-.666-1.62-.276-.408-.597-.699-.963-.873a2.56 2.56 0 0 0-2.286 0c-.366.174-.687.465-.963.873-.276.408-.498.948-.666 1.62-.162.666-.243 1.491-.243 2.475s.081 1.809.243 2.475c.168.666.39 1.203.666 1.611.276.408.597.702.963.882a2.632 2.632 0 0 0 2.286 0c.366-.18.687-.474.963-.882.282-.408.504-.945.666-1.611.168-.666.252-1.491.252-2.475zm12.106 0c0 1.128-.123 2.106-.369 2.934-.24.822-.57 1.503-.99 2.043-.42.54-.918.942-1.494 1.206a4.315 4.315 0 0 1-1.836.396c-.66 0-1.275-.132-1.845-.396a4.027 4.027 0 0 1-1.476-1.206c-.42-.54-.75-1.221-.99-2.043-.24-.828-.36-1.806-.36-2.934 0-1.128.12-2.106.36-2.934.24-.828.57-1.512.99-2.052.42-.546.912-.951 1.476-1.215a4.336 4.336 0 0 1 1.845-.396c.654 0 1.266.132 1.836.396a3.954 3.954 0 0 1 1.494 1.215c.42.54.75 1.224.99 2.052.246.828.37 1.806.37 2.934zm-1.665 0c0-.984-.084-1.809-.252-2.475-.162-.672-.384-1.212-.666-1.62-.276-.408-.597-.699-.963-.873a2.56 2.56 0 0 0-2.286 0c-.366.174-.687.465-.963.873-.276.408-.498.948-.666 1.62-.162.666-.243 1.491-.243 2.475s.081 1.809.243 2.475c.168.666.39 1.203.666 1.611.276.408.597.702.963.882a2.632 2.632 0 0 0 2.286 0c.366-.18.687-.474.963-.882.282-.408.504-.945.666-1.611.168-.666.252-1.491.252-2.475z"/> <path stroke="#CCC" d="M80.5 54V1"/> <path stroke="#CCC" stroke-dasharray="3 2" d="M59.5 54V33"/> <path stroke="#E2231A" stroke-width="2" d="M0 54h5.684C38.468 54 67.928 33.98 80 3.5"/> <circle cx="80.5" cy="3.5" r="3.5" fill="#E2231A"/> 
+  </symbol>
+  <symbol id="alrosa-5" viewBox="0 0 47 26">
+     <path d="M0 6.503v12.994L11.738 26l11.74-6.503V6.503L11.739 0 0 6.503z" fill="#E2002B"/> <path d="M0 6.503L11.737 26 23.48 6.503H0z" fill="#fff"/> <path d="M23.518 6.503v12.994L35.258 26 47 19.497V6.503L35.259 0 23.518 6.503z" fill="#006AAF"/> <path d="M35.259 0L47 19.497H23.518L35.258 0z" fill="#fff"/> 
+  </symbol>
+  <symbol id="arrow-up" viewBox="0 0 16 9">
+     <path stroke="#EC231A" stroke-width="1.955" d="M15.333 8.181L8 1.337.667 8.181"/> 
+  </symbol>
+  <symbol id="bristol-13" viewBox="0 0 35 30">
+     <path fill-rule="evenodd" clip-rule="evenodd" d="M17.542 14.039L25.678 0H9.322l8.22 14.039zm5.509-12.284c.593-.25.932-.502 1.356-.752l.084.083c-.254.335-.593.585-.847 1.17l-5.17 8.775c-.338.501-.508.919-.677 1.337l-.085-.084c0-.501.085-1.003.085-1.588v-5.85l5.254-3.091zm-5.848 3.092v5.85c0 .584.085 1.086.085 1.587l-.085.084c-.17-.418-.339-.836-.678-1.337l-5.084-8.775c-.34-.585-.678-.835-.933-1.17l.085-.083c.424.25.763.501 1.356.752l5.254 3.092zm4.068 7.771c-.593.335-.932.585-1.356.836l-.084-.084c.254-.334.593-.668.847-1.253l5.17-8.69c.338-.502.508-1.004.677-1.338h.085c0 .502-.085 1.086-.085 1.588V9.61l-5.254 3.008zM8.56 9.61V3.677c0-.502-.084-1.086-.084-1.588h.084c.085.334.255.836.594 1.337l5.169 8.691c.339.585.593.92.848 1.253l-.085.084c-.34-.25-.763-.501-1.356-.836L8.559 9.61zm18.56 0V3.677c0-.502-.085-1.086-.085-1.588h.085c.17.334.339.836.678 1.337l5.084 8.691c.34.585.678.92.933 1.253l-.085.084c-.424-.25-.763-.501-1.356-.836L27.119 9.61zM2.627 12.618c-.593.335-.932.585-1.356.836v-.084c.17-.334.509-.668.848-1.253l5.17-8.69c.253-.502.423-1.004.592-1.338h.085c0 .502-.085 1.086-.085 1.588V9.61l-5.254 3.008zm15.17 12.535V19.22c0-.501-.085-1.086-.085-1.588h.085c.17.335.339.836.678 1.337l5.17 8.775c.253.501.592.835.846 1.17l-.084.083c-.424-.25-.763-.501-1.356-.835l-5.254-3.009zm-5.848 3.009c-.593.334-.932.585-1.356.835l-.085-.083c.255-.335.594-.669.933-1.17l5.084-8.775c.34-.501.509-1.002.678-1.337h.085c0 .502-.085 1.087-.085 1.588v5.933l-5.254 3.009zm-3.729 1.42l8.136-14.039H0l8.22 14.04zm5.509-12.2c.593-.335 1.017-.585 1.356-.836l.084.084c-.254.334-.508.668-.847 1.17l-5.17 8.774a4.29 4.29 0 0 0-.593 1.337l-.084-.084c0-.418.084-1.003.084-1.504V20.39l5.17-3.008zM7.88 20.39v5.933c0 .502.085 1.087.085 1.504l-.085.084c-.17-.334-.339-.836-.593-1.337l-5.17-8.775c-.338-.501-.677-.835-.847-1.17v-.083c.424.25.763.501 1.356.836l5.254 3.008zm18.899 9.192L35 15.543H18.644l8.136 14.04zm-.255-9.192v5.933c0 .502.085 1.087.085 1.504l-.085.084c-.17-.334-.339-.836-.677-1.337l-5.17-8.775c-.254-.501-.593-.835-.848-1.17l.085-.083c.424.25.763.501 1.356.836l5.254 3.008zm5.848-3.008c.593-.335.932-.585 1.356-.836l.085.084c-.255.334-.594.668-.933 1.17l-5.084 8.774c-.34.501-.509 1.003-.678 1.337l-.085-.084c0-.418.085-1.003.085-1.504V20.39l5.254-3.008zm-10-16.713c.678 0 1.186-.084 1.695-.168v.084c-.34.167-.848.334-1.356.668l-5.17 3.009-5.254-3.009c-.508-.334-1.017-.5-1.356-.668V.501c.509.084 1.017.168 1.695.168h9.746zm-9.237 15.543c.593 0 1.101-.084 1.61-.084-.34.167-.848.334-1.356.669l-5.17 3.008-5.254-3.008c-.424-.335-1.017-.502-1.356-.669.509 0 1.017.084 1.695.084h9.83zm18.559 0c.678 0 1.186-.084 1.695-.084-.34.167-.848.334-1.356.669l-5.254 3.008-5.17-3.008c-.508-.335-1.017-.502-1.356-.669.509 0 1.017.084 1.695.084h9.746zm-28.39-2.424c-.678 0-1.186 0-1.695.084v-.084c.34-.167.932-.334 1.356-.585l5.254-3.008 5.17 3.008c.508.251 1.017.418 1.356.585v.084c-.509-.084-1.017-.084-1.61-.084h-9.83zM0 14.457h16.356L8.22.417 0 14.458zm21.95-.669c-.679 0-1.187 0-1.696.084v-.084c.34-.167.848-.334 1.356-.585l5.17-3.008 5.254 3.008c.508.251 1.017.418 1.356.585v.084c-.509-.084-1.017-.084-1.695-.084h-9.746zm-3.306.669H35L26.78.417l-8.136 14.04zM9.322 30h16.356l-8.136-14.039L9.322 30zm3.305-.669c-.678 0-1.186 0-1.695.084v-.084c.34-.083.848-.25 1.356-.584l5.254-3.009 5.17 3.009a4.414 4.414 0 0 0 1.356.584v.084c-.509-.084-1.017-.084-1.695-.084h-9.746z" fill="#2E4B7D"/> 
+  </symbol>
+  <symbol id="case-doc" viewBox="0 0 30 36">
+     <path fill="none" d="M0 0h30v36H0z"/> <path fill="none" d="M0 0h30v36H0z"/> <path fill="#A8D0E3" fill-rule="evenodd" d="M2.277 2.281v31.438h25.446V8.029L21.62 2.28H2.277zM0 2.132A2.13 2.13 0 0 1 2.129 0h19.55c.543 0 1.064.207 1.459.579L29.33 6.41c.427.403.67.965.67 1.553v25.904A2.13 2.13 0 0 1 27.871 36H2.13A2.13 2.13 0 0 1 0 33.868V2.132z" clip-rule="evenodd"/> <path fill="#A8D0E3" fill-rule="evenodd" d="M23.91 13.19c0 .63-.51 1.14-1.138 1.14H7.227a1.14 1.14 0 0 1 0-2.28h15.545c.629 0 1.139.51 1.139 1.14zm0 5.95c0 .63-.51 1.141-1.138 1.141H7.227a1.14 1.14 0 0 1 0-2.281h15.545c.629 0 1.139.51 1.139 1.14zm0 5.95c0 .63-.51 1.141-1.138 1.141H7.227a1.14 1.14 0 0 1 0-2.28h15.545c.629 0 1.139.51 1.139 1.14z" clip-rule="evenodd"/> 
+  </symbol>
+  <symbol id="case-percent" viewBox="0 0 36 36">
+     <path fill="none" d="M0 0h36v36H0z"/> <path fill="none" d="M0 0h36v36H0z"/> <path fill="#A8D0E3" d="M27 2.25c3.75 0 6.75 3 6.75 6.75v18c0 3.75-3 6.75-6.75 6.75H9c-3.75 0-6.75-3-6.75-6.75V9c0-3.75 3-6.75 6.75-6.75h18zM27 0H9C4.05 0 0 4.05 0 9v18c0 4.95 4.05 9 9 9h18c4.95 0 9-4.05 9-9V9c0-4.95-4.05-9-9-9z"/> <path fill="none" d="M8.925 8.775h7.8v7.95h-7.8z"/> <path fill="#A8D0E3" d="M12.825 11.025c.9 0 1.65.75 1.65 1.725 0 .9-.75 1.725-1.65 1.725-.9 0-1.65-.75-1.65-1.725-.075-.975.675-1.725 1.65-1.725zm0-2.25c-2.175 0-3.9 1.8-3.9 3.975s1.8 3.975 3.9 3.975c2.175 0 3.9-1.8 3.9-3.975S15 8.775 12.825 8.775z"/> <path fill="none" d="M19.425 19.35h7.802v7.95h-7.802z"/> <path fill="#A8D0E3" d="M23.325 21.675c.9 0 1.65.75 1.65 1.725 0 .9-.75 1.725-1.65 1.725-.9 0-1.65-.75-1.65-1.725 0-.975.75-1.725 1.65-1.725zm0-2.325c-2.175 0-3.9 1.8-3.9 3.975s1.8 3.975 3.9 3.975c2.1 0 3.9-1.8 3.9-3.975.075-2.175-1.725-3.975-3.9-3.975z"/> <path fill="none" d="M9.407 9.83H26.19v16.84H9.407z"/> <path fill="#A8D0E3" d="M24.595 9.83L9.407 25.084l1.595 1.588L26.19 11.418l-1.595-1.587z"/> 
+  </symbol>
+  <symbol id="chat-3" viewBox="0 0 31.99 31.99">
+      <g id="Layer_2" data-name="Layer 2"> <g id="&#x421;&#x43B;&#x43E;&#x439;_1" data-name="&#x421;&#x43B;&#x43E;&#x439; 1"> <circle cx="16" cy="16" r="16" fill="#fff"/> <path class="cls-2" d="M28 16.08a12 12 0 1 0-4.26 9.16L26.5 28l1.41-1.41-2.76-2.76A12 12 0 0 0 28 16.08zm-12 10a10 10 0 1 1 7.74-3.68l-2.55-2.55-1.41 1.41 2.55 2.55A10 10 0 0 1 16 26.08z"/> <circle class="cls-2" cx="16" cy="16.08" r="1.45"/> <circle class="cls-2" cx="11" cy="16.08" r="1.45"/> <circle class="cls-2" cx="21" cy="16.08" r="1.45"/> </g> </g> 
+  </symbol>
+  <symbol id="gss-icon-list" viewBox="0 0 5 5">
+    <rect width="2" height="2" x="0" y="0"></rect>
+    <rect width="2" height="2" x="3" y="0"></rect>
+    <rect width="2" height="2" x="0" y="3"></rect>
+    <rect width="2" height="2" x="3" y="3"></rect>
+  </symbol>
+</svg>
+<header class="gss-toolbar">
+  <h1>9 Symbols</h1>
+  <button class="gss-toolbar-list">
+    <svg aria-label="Compact" width="15" height="15"><use xlink:href="#gss-icon-list"></use>
+    </svg> List
+  </button>
+  <input class="gss-toolbar-filter" type="search"
+         placeholder="Filter 9 symbols…"
+         aria-label="Filter by id" title="Filter by id">
+  <button class="gss-toolbar-orig" data-toggle-class="gss-showOriginal">Original Size</button>
+  <button class="gss-toolbar-outl" data-toggle-class="gss-showColor">Test Color</button>
+</header>
+<main>
+<nav class="gss-iconlist" hidden></nav>
+<div class="gss-iconboxes">
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-about-iis-1"
+       data-search="about-iis-1 about-iis-1 81x20 <1 <2 <3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>about-iis-1</h2>
+      <span>0.3&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>about-iis-1.svg</span>
+      <span>81&thinsp;×&thinsp;20</span>
+      <span>266&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="81&thinsp;×&thinsp;20">
+        <svg role="img" id="gss-icon-about-iis-1">
+          <use xlink:href="#about-iis-1"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;about-iis-1&quot;&gt;
+  &lt;use xlink:href=&quot;#about-iis-1&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-about-iis-2"
+       data-search="about-iis-2 about-iis-2 81x24 >1 >2 >3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>about-iis-2</h2>
+      <span>3.8&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>about-iis-2.svg</span>
+      <span>81&thinsp;×&thinsp;24</span>
+      <span>3813&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="81&thinsp;×&thinsp;24">
+        <svg role="img" id="gss-icon-about-iis-2">
+          <use xlink:href="#about-iis-2"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;about-iis-2&quot;&gt;
+  &lt;use xlink:href=&quot;#about-iis-2&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-about-iis-3"
+       data-search="about-iis-3 about-iis-3 84x55 >1 >2 >3 >4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>about-iis-3</h2>
+      <span>4.9&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>about-iis-3.svg</span>
+      <span>84&thinsp;×&thinsp;55</span>
+      <span>4866&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="84&thinsp;×&thinsp;55">
+        <svg role="img" id="gss-icon-about-iis-3">
+          <use xlink:href="#about-iis-3"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;about-iis-3&quot;&gt;
+  &lt;use xlink:href=&quot;#about-iis-3&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-alrosa-5"
+       data-search="alrosa-5 alrosa-5 47x26 <1 <2 <3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>alrosa-5</h2>
+      <span>0.4&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>alrosa-5.svg</span>
+      <span>47&thinsp;×&thinsp;26</span>
+      <span>364&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="47&thinsp;×&thinsp;26">
+        <svg role="img" id="gss-icon-alrosa-5">
+          <use xlink:href="#alrosa-5"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;alrosa-5&quot;&gt;
+  &lt;use xlink:href=&quot;#alrosa-5&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-arrow-up"
+       data-search="arrow-up arrow-up 16x9 <1 <2 <3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>arrow-up</h2>
+      <span>0.1&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>arrow-up.svg</span>
+      <span>16&thinsp;×&thinsp;9</span>
+      <span>141&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="16&thinsp;×&thinsp;9">
+        <svg role="img" id="gss-icon-arrow-up">
+          <use xlink:href="#arrow-up"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;arrow-up&quot;&gt;
+  &lt;use xlink:href=&quot;#arrow-up&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-bristol-13"
+       data-search="bristol-13 bristol-13 35x30 >1 >2 >3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>bristol-13</h2>
+      <span>3.4&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>bristol-13.svg</span>
+      <span>35&thinsp;×&thinsp;30</span>
+      <span>3443&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="35&thinsp;×&thinsp;30">
+        <svg role="img" id="gss-icon-bristol-13">
+          <use xlink:href="#bristol-13"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;bristol-13&quot;&gt;
+  &lt;use xlink:href=&quot;#bristol-13&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-case-doc"
+       data-search="case-doc case-doc 30x36 <1 <2 <3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>case-doc</h2>
+      <span>0.8&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>case-doc.svg</span>
+      <span>30&thinsp;×&thinsp;36</span>
+      <span>793&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="30&thinsp;×&thinsp;36">
+        <svg role="img" id="gss-icon-case-doc">
+          <use xlink:href="#case-doc"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;case-doc&quot;&gt;
+  &lt;use xlink:href=&quot;#case-doc&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-case-percent"
+       data-search="case-percent case-percent 36x36 >1 <2 <3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>case-percent</h2>
+      <span>1.1&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>case-percent.svg</span>
+      <span>36&thinsp;×&thinsp;36</span>
+      <span>1136&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="36&thinsp;×&thinsp;36">
+        <svg role="img" id="gss-icon-case-percent">
+          <use xlink:href="#case-percent"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;case-percent&quot;&gt;
+  &lt;use xlink:href=&quot;#case-percent&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-chat-3"
+       data-search="chat (3) chat-3 32x32 <1 <2 <3 <4 <5 <6 <7 <8 <9">
+    <div class="gss-iconbox-header">
+      <h2>chat-3</h2>
+      <span>0.6&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>chat (3).svg</span>
+      <span>32&thinsp;×&thinsp;32</span>
+      <span>579&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="32&thinsp;×&thinsp;32">
+        <svg role="img" id="gss-icon-chat-3">
+          <use xlink:href="#chat-3"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;chat-3&quot;&gt;
+  &lt;use xlink:href=&quot;#chat-3&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+</div>
+</main>
+<script type="text/javascript">
+  (function () {
+    var header = document.querySelector('.gss-toolbar');
+    var boxes = document.querySelector('.gss-iconboxes');
+    var clist = document.querySelector('.gss-iconlist');
+    var main = document.querySelector('main');
+
+    // Show header
+    header.classList.add('gss-toolbar--active');
+
+    // Hide example code and show controls
+    [].forEach.call(
+      boxes.querySelectorAll('.gss-iconbox'),
+      toggleBoxContent
+    );
+
+    // Toggle list of smaller icons
+    var listToggle = header.querySelector('.gss-toolbar-list');
+    listToggle.hidden = false;
+    listToggle.addEventListener('click', function(event) {
+        toggleCompactList();
+    });
+    // Close list and navigate
+    clist.addEventListener('click', function(event) {
+      var link = closest(
+        event.target,
+        function(el){return el.hasAttribute('href')}
+      );
+      if (link) {
+        event.preventDefault();
+        var target = document.querySelector(link.getAttribute('href'));
+        if (target) toggleCompactList('big', target);
+      }
+    });
+
+    // Enable filter box
+    var filterInput = header.querySelector('.gss-toolbar-filter');
+    var filterStyle = document.querySelector('.gss-filter-css');
+    // filter once on page load, then on key presses
+    if (filterInput && filterStyle) {
+      filterIcons(filterInput.value, filterStyle);
+      filterInput.addEventListener('keypress', function(e) {
+        if (e.keyCode === 27) {
+          e.currentTarget.value = '';
+          filterIcons('', filterStyle);
+        }
+      });
+      filterInput.addEventListener('input', function(e) {
+        filterIcons(e.currentTarget.value, filterStyle);
+      });
+      filterInput.hidden = false;
+    }
+
+    // Icon actions (with event delegation)
+    boxes.addEventListener('click', function(event) {
+      var action = event.target.getAttribute('data-action');
+      if (!action) return;
+      var box = closest(event.target, function(el){
+        return el.classList.contains('gss-iconbox');
+      });
+      if (box && action === 'info') {
+        var state = toggleBoxContent(box);
+      }
+      if (box && action === 'copy') {
+        selectAndCopy(box.querySelector('code'));
+      }
+    });
+    // Remove JS-added tabindex from boxes, to avoid giving a focusring
+    // to a box by clicking it or its content.
+    boxes.addEventListener('blur', function(event) {
+      var t = event.target;
+      if (t.classList.contains('gss-iconbox') && t.hasAttribute('tabindex')) {
+        t.removeAttribute('tabindex');
+      }
+    }, true);
+
+    // Enable checkboxes
+    header.addEventListener('click', function(event) {
+      var attr = 'data-toggle-class';
+      var btn = closest(event.target, function(el) {
+        return el.hasAttribute(attr);
+      });
+      if (btn) {
+        var c = btn.getAttribute(attr);
+        if (main.classList.contains(c)) {
+          main.classList.remove(c);
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          main.classList.add(c);
+          btn.setAttribute('aria-pressed', 'true');
+        }
+      }
+    });
+
+    /**
+     * Quick and dirty polyfill for element.closest
+     * @param {Element} self
+     * @param {Function} cb - must return true for a matching element
+     * @return {Element|null}
+     */
+    function closest(self, cb) {
+      if (cb(self)) return self;
+      var p = self.parentElement;
+      return p === null ? null : closest(p, cb);
+    }
+
+    /**
+     * Toggle code example visibility
+     */
+    function toggleBoxContent(box) {
+      var a = 'data-state', x = 'icon', y = 'info';
+      var s = box.getAttribute(a) === x ? y : x;
+      box.setAttribute(a, s);
+      return s;
+    }
+
+    /**
+     * Copy example code to clipboard
+     * https://developers.google.com/web/updates/2015/04/cut-and-copy-commands
+     */
+    function selectAndCopy(element) {
+      window.getSelection().removeAllRanges();
+      var range = document.createRange();
+      range.selectNode(element);
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+    }
+
+    /**
+     * Filter content by id, with multiple words possible (additive)
+     * Filtering is done by injecting CSS rules in a stylesheet
+     */
+    function filterIcons(query, stylesheet) {
+      // clean up input
+      var search = query.toLowerCase()
+        .replace(/["'\\\]){}]+/g, ' ')
+        .replace('/\s+/g', ' ')
+        .trim();
+      // undo filter
+      if (search === '') {
+        stylesheet.innerHTML = '';
+        return;
+      }
+      // add filter
+      var keywords = search.split(' ');
+      var css = '';
+      for (var i=0; i<keywords.length; i++) {
+        if (i>0) css += ',\n';
+        css += '.gss-searchable:not([data-search*="' + keywords[i] + '"])';
+      }
+      css += '\n{ display: none !important; }';
+      stylesheet.innerHTML = css;
+    }
+
+    /**
+     * Show the compact list
+     * @param {string} mode - 'small' or 'big'
+     * @param {Element|undefined} target - element to focus
+     */
+    function toggleCompactList(mode, target) {
+      if (clist.childElementCount === 0) {
+        clist.innerHTML = '<ul>' + getCompactList(boxes).join('\n') + '</ul>';
+      }
+      if (['small', 'big'].indexOf(mode) === -1) {
+        mode = clist.hidden ? 'small' : 'big';
+      }
+      // switch content
+      clist.hidden = (mode === 'big');
+      boxes.hidden = (mode === 'small');
+
+      // update button status
+      listToggle.setAttribute('aria-pressed', String(mode === 'small'));
+
+      // scroll to the top if showing the small list
+      if (mode === 'small' || (mode === 'big' && !target)) {
+        window.scrollTo(0, 0);
+      }
+      // scroll to element and give it focus if going to big mode
+      if (mode === 'big' && target) {
+        // focus element
+        target.setAttribute('tabindex', '-1');
+        target.focus();
+        // centering in viewport
+        var y = target.offsetTop - window.innerHeight / 2 + target.offsetHeight / 2;
+        window.scrollTo(0, Math.max(Math.round(y) - 20 /* adjust for header */, 0));
+      }
+    }
+
+    /**
+     * Make the list of smaller icons by copying from the big list
+     */
+    function getCompactList(source) {
+      var icons = source.querySelectorAll('.gss-iconbox');
+      return [].map.call(icons, function(el) {
+        var search = el.getAttribute('data-search');
+        var icon = el.querySelector('.gss-iconbox-icon > svg').outerHTML;
+        return '<li class="gss-iconlist-item gss-searchable" ' +
+          'data-search="' + search +'"><a href="#' + el.id + '">' +
+          icon + '</a></li>';
+      });
+    }
+
+  }());
+</script>
+</body>
+</html>

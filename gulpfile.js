@@ -7,7 +7,6 @@ var gulp             = require('gulp'),
 	rename           = require('gulp-rename'),
 	del              = require('del'),
 	imagemin         = require('gulp-imagemin'),
-	image            = require('gulp-image'),
 	pngquant         = require('imagemin-pngquant'),
 	cache            = require('gulp-cache'),
 	autoprefixer     = require('gulp-autoprefixer'),
@@ -17,14 +16,20 @@ var gulp             = require('gulp'),
 	imageminGiflossy = require('imagemin-giflossy'),
 	pug              = require('gulp-pug'),
 	plumber          = require('gulp-plumber'),
+	gulpif           = require('gulp-if'),
+	svgmin           = require('gulp-svgmin'),
+	htmlbeautify     = require('gulp-html-beautify'),
+	cheerio          = require('gulp-cheerio')
+	path             = require('path'),
 	svgSymbols       = require('gulp-svg-symbols'),
-	htmlbeautify     = require('gulp-html-beautify');
+	gcmq             = require('gulp-group-css-media-queries');
 
 // таск для компиляции scss в css
-gulp.task('sass', function() {
+gulp.task('sass', () => {
 	return gulp.src('scss/style.scss')
 	.pipe(sass().on('error', sass.logError))
-	.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], {cascade: true}))
+	.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8'], {cascade: true}))
+	.pipe(gcmq())
 	.pipe(gulp.dest('css'))
 	.pipe(browserSync.reload({stream: true}))
 });
@@ -36,73 +41,107 @@ var jsFiles = [
 ];
 
 // таск для объединения js файлов
-gulp.task('scripts', function() {
+gulp.task('scripts', () => {
 	return gulp.src(jsFiles)
 		.pipe(concat('main.min.js'))
 		.pipe(gulp.dest('js')); // Выгружаем в папку app/js
 });
 
-gulp.task('demo', function () {
-	console.log(svgSymbols());
-	// return gulp.src('img/svg-for-sprite/*.svg')
-	// 	.pipe(svgSymbols.demoPage())
-	// 	.pipe(gulp.dest('./'));
-});
-
-gulp.task('sprites', function() {
-	return gulp
-		.src('img/svg-for-sprite/*.svg')
+// сжимаем и оптимизируем svg картинки
+gulp.task('svg-min', function() {
+	return gulp.src('./img/svg-for-min/*.svg')
 		.pipe(
-			svgSymbols(
-			{
-				svgAttrs: { class: 'svg-symbol', },
-				icons: [
-				{
-					id: `string`,
-					class: `.string`,
-					width: `a number as a string with a unit`,
-					height: `a number as a string with a unit`,
-					style: `string if exists`,
-					svg: {
-						name: `string (svg filename without extension)`,
-						id: `string`,
-						width: `number`,
-						height: `number`,
-						content: `the svg markup as a string`,
-						viewBox: `string`,
-					//   originalAttributes: {
-					// 	 every attributes before processing them
+			svgmin(file => {
+				const { relative } = file
+				const prefix = path.basename(relative, path.extname(relative))
+				return {
+					js2svg: {
+						pretty: true,
 					},
-				}],
-				transformData: function(svg, defaultData, options) {
-					console.log(svg, options);
-				  /******
-				  svg is same object as the one passed to the templates (see above)
-
-				  defaultData are the ones needed by default templates
-				  see /lib/get-default-data.js
-
-				  options are the one you have set in your gulpfile,
-				    minus templates & transformData
-				  *******/
-
-				  return {
-				    // Return every datas you need
-				    id:         defaultData.id,
-				    class:      defaultData.class,
-				    width:      `${svg.width}em`,
-				    height:     `${svg.height}em`
-				  };
+					plugins: [
+						{
+							// this prevent duplicated IDs when bundled in the same file
+							cleanupIDs: { prefix: '${prefix}-' + Math.floor(Math.random() * (100 - 10)) + 10 },
+						},
+						{
+							// some cleaning
+							removeDoctype: true,
+						},
+						{
+							removeXMLProcInst: true,
+						},
+						{
+							removeViewBox: false
+						},
+						{
+							removeTitle: true,
+						},
+						{
+							removeDesc: { removeAny: true },
+						},
+						{
+							convertTransform: {},
+						},
+					],
 				}
-
 			})
 		)
-		.pipe(gulp.dest('img/'))
+		// We need to move <clipPath> and <Mask> to the defs…
+		// …in order for Firefox to render the SVG correctly
+		.pipe(
+			cheerio({
+				run: ($, file) => {
+					const $clipPath = $('clipPath')
+					const $mask = $('mask')
+					let $defs = $('defs')
+					const hasClipPath = $clipPath.length > 0
+					const hasMask = $mask.length > 0
+					const hasDefs = $defs.length > 0
+
+					if (!hasClipPath && !hasMask) return
+
+					if (!hasDefs) {
+						$defs = $('<defs></defs>')
+						$defs.prependTo('svg')
+					}
+
+					function copyToDefs(i, el) {
+						const $el = $(el)
+						const $clone = $el.clone()
+						$clone.appendTo($defs)
+						$el.remove()
+					}
+
+					if (hasClipPath) $clipPath.each(copyToDefs)
+						if (hasMask) $mask.each(copyToDefs)
+				},
+				parserOptions: {
+					xmlMode: true,
+				},
+			})
+		)
+		.pipe(gulp.dest('./img/svg-for-sprite'))
+})
+
+// собираем инлайн спрайт из svg иконок + собираем страницу для просмотра всех иконок
+gulp.task('svg-sprite', function() {
+	return gulp.src('img/svg-for-sprite/*.svg')
+		.pipe(
+			svgSymbols(
+				{
+					svgAttrs: { class: 'svg-symbol', fill: 'none'},
+					templates: ['default-svg', 'default-demo', 'default-scss']
+				}
+			)
+		)
+		.pipe(gulpif(/[.]svg$/, gulp.dest('./img')))
+		.pipe(gulpif(/[.]html$/, gulp.dest('./')))
+		.pipe(gulpif(/[.]scss$/, gulp.dest('scss')))
 })
 
 
 // таск для сборки, транспалирования и сжатия скриптов
-gulp.task('scripts-build', function() {
+gulp.task('scripts-build', () => {
 	return gulp.src(jsFiles)
 		.pipe(babel({
 			presets: ['@babel/preset-env']
@@ -113,7 +152,7 @@ gulp.task('scripts-build', function() {
 });
 
 // приводим впорядок скомпилированный код после pug-a
-gulp.task('htmlbeautify', function() {
+gulp.task('htmlbeautify', () => {
 	var options = {
 		indentSize: 4,
 		unformatted: [
@@ -134,39 +173,47 @@ gulp.task('htmlbeautify', function() {
 });
 
 // компиляция pug файлов
-gulp.task('pug', function() {
+gulp.task('pug', () => {
 	return gulp.src("./src/*.pug")
 		.pipe(plumber())
 		.pipe(pug())
 		.pipe(htmlbeautify())
 		.pipe(gulp.dest("./"))
-		.pipe(browserSync.stream());
+		.pipe(browserSync.reload({stream: true}))
 });
 
 // таск для обновления страницы
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', () => {
 	browserSync({
 		server: {
 			baseDir: './'
+		},
+		serveStaticOptions: {
+			extensions: ["html"]
+		},
+		ghostMode: {
+			scroll: false
 		},
 		notify: false,
 	})
 });
 
+// gulp.task('svg-containing-identical-id', svgContainingIdenticalId)
+
 // таск следит за изменениями файлов и вызывает другие таски
 gulp.task('watch', function() {
-	gulp.watch('scss/**/*.scss',['sass']);
-	gulp.watch(['src/*.pug','src/**/*.pug'],['pug']);
-	gulp.watch(['js/vendors/*.js', 'js/main.js', 'js/modules/*.js'],['scripts']);
-	gulp.watch('img/**/*.svg', ['sprites']);
-	gulp.watch('img/*', browserSync.reload);
-	gulp.watch('src/*.html', browserSync.reload);
-	gulp.watch('**/*.html', browserSync.reload);
+	gulp.watch('scss/**/*.scss', gulp.parallel('sass'));
+	gulp.watch(['src/*.pug','src/**/*.pug'], gulp.parallel('pug'));
+	gulp.watch(['js/vendors/*.js', 'js/main.js', 'js/modules/*.js'], gulp.parallel('scripts'));
+	gulp.watch(['img/svg-for-min/*'], {events: ['all']}, gulp.series('svg-min', () => { del('img/svg-for-min/*.svg'); }));
+	gulp.watch('img/svg-for-sprite/*', {events: ['all']}, gulp.series('svg-sprite', 'pug'));
+	gulp.watch('./*.html', gulp.series(() => { browserSync.reload(); }));
 	gulp.watch('js/*.js', browserSync.reload);
+	gulp.watch('img/*', browserSync.reload);
 });
 
 // таск сжимает картинки без потери качества
-gulp.task('img', function() {
+gulp.task('img', () => {
 	return gulp.src('img/**') // откуда брать картинки
 	.pipe(cache(imagemin([
 		//png
@@ -177,12 +224,6 @@ gulp.task('img', function() {
 		imageminZopfli({
 			more: true
 			// iterations: 50 // very slow but more effective
-		}),
-		//svg
-		imagemin.svgo({
-			plugins: [{
-				removeViewBox: false
-			}]
 		}),
 		//jpg lossless
 		imagemin.jpegtran({
@@ -197,7 +238,7 @@ gulp.task('img', function() {
 });
 
 // сборка проекта
-gulp.task('build', ['sass', 'pug', 'scripts-build', 'img'])
+gulp.task('build', gulp.series('svg-min', 'svg-sprite', 'sass', 'pug', 'scripts-build', 'img', () => { console.log('builded');}))
 
 // основной таск, который запускает вспомогательные
-gulp.task('default', ['browser-sync','watch', 'sass', 'pug', 'scripts']);
+gulp.task('default', gulp.parallel('watch', 'browser-sync', 'sass', 'pug', 'svg-min', 'svg-sprite', 'scripts', (done) => { console.log('done');}));
