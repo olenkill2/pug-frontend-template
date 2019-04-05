@@ -2,53 +2,169 @@
 
 /* ********************** */
 
-.about-iis-1 {
-  width: 81px;
-  height: 20px;
+.asia-exchg {
+  width: 48px;
+  height: 48px;
 }
 
-.about-iis-2 {
-  width: 81px;
-  height: 24px;
+.banner-arrow {
+  width: 21px;
+  height: 21px;
 }
 
-.about-iis-3 {
-  width: 84px;
-  height: 55px;
+.dvc {
+  width: 300px;
+  height: 49px;
 }
 
-.alrosa-5 {
-  width: 47px;
-  height: 26px;
+.europe-exchg {
+  width: 45px;
+  height: 46px;
 }
 
-.arrow-up {
+.featured {
   width: 16px;
-  height: 9px;
+  height: 16px;
 }
 
-.bristol-13 {
-  width: 35px;
-  height: 30px;
+.global-exchg {
+  width: 52px;
+  height: 48px;
 }
 
-.case-doc {
-  width: 30px;
-  height: 36px;
-}
-
-.case-percent {
+.iconexpand {
   width: 36px;
   height: 36px;
 }
 
-.chat-3 {
-  width: 31.99px;
-  height: 31.99px;
+.index-slider-next {
+  width: 16px;
+  height: 16px;
 }
 
-.cls-2 {
-  fill: #ec231a;
+.index-slider-prev {
+  width: 16px;
+  height: 16px;
+}
+
+.index-telegram {
+  width: 85px;
+  height: 74px;
+}
+
+.input-error {
+  width: 16px;
+  height: 16px;
+}
+
+.ipo1 {
+  width: 185px;
+  height: 85px;
+}
+
+.ipo2 {
+  width: 208px;
+  height: 40px;
+}
+
+.ipo3 {
+  width: 152px;
+  height: 84px;
+}
+
+.ipo4 {
+  width: 185px;
+  height: 36px;
+}
+
+.ipo5 {
+  width: 210px;
+  height: 54px;
+}
+
+.itiglobal {
+  width: 27px;
+  height: 31px;
+}
+
+.moscow-exchg {
+  width: 48px;
+  height: 48px;
+}
+
+.partners1 {
+  width: 300px;
+  height: 49px;
+}
+
+.partners3 {
+  width: 150px;
+  height: 44px;
+}
+
+.phone {
+  width: 12px;
+  height: 16px;
+}
+
+.registration-arrow {
+  width: 21px;
+  height: 21px;
+}
+
+.shape-copy {
+  width: 13px;
+  height: 16px;
+}
+
+.slide-4-img {
+  width: 165px;
+  height: 60px;
+}
+
+.spb-exchg {
+  width: 63px;
+  height: 48px;
+}
+
+.sprite-102da090 {
+  width: 200px;
+  height: 98px;
+}
+
+.sprite-23aee52a {
+  width: 200px;
+  height: 139px;
+}
+
+.sprite-9897454e {
+  width: 200px;
+  height: 98px;
+}
+
+.sprite-aa32ec8f {
+  width: 200px;
+  height: 70px;
+}
+
+.sprite-d2e0e642 {
+  width: 200px;
+  height: 98px;
+}
+
+.tlg {
+  width: 29px;
+  height: 24px;
+}
+
+.usa-exchg {
+  width: 49px;
+  height: 48px;
+}
+
+.videoplay {
+  width: 97px;
+  height: 97px;
 }
 
 /* base */

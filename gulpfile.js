@@ -47,8 +47,12 @@ gulp.task('scripts', () => {
 		.pipe(gulp.dest('js')); // Выгружаем в папку app/js
 });
 
+gulp.task('clean', function () {
+	del('img/svg-for-min/*.svg', {force:true});
+});
+
 // сжимаем и оптимизируем svg картинки
-gulp.task('svg-min', function() {
+gulp.task('svg-min', () => {
 	return gulp.src('./img/svg-for-min/*.svg')
 		.pipe(
 			svgmin(file => {
@@ -121,6 +125,7 @@ gulp.task('svg-min', function() {
 			})
 		)
 		.pipe(gulp.dest('./img/svg-for-sprite'))
+		.on('end', () => {del('./img/svg-for-min/*.svg', {force:true})})
 })
 
 // собираем инлайн спрайт из svg иконок + собираем страницу для просмотра всех иконок
@@ -205,9 +210,9 @@ gulp.task('watch', function() {
 	gulp.watch('scss/**/*.scss', gulp.parallel('sass'));
 	gulp.watch(['src/*.pug','src/**/*.pug'], gulp.parallel('pug'));
 	gulp.watch(['js/vendors/*.js', 'js/main.js', 'js/modules/*.js'], gulp.parallel('scripts'));
-	gulp.watch(['img/svg-for-min/*'], {events: ['all']}, gulp.series('svg-min', () => { del('img/svg-for-min/*.svg'); }));
+	gulp.watch(['img/svg-for-min/*'], {events: ['all']}, gulp.series('svg-min', 'svg-sprite'));
 	gulp.watch('img/svg-for-sprite/*', {events: ['all']}, gulp.series('svg-sprite', 'pug'));
-	gulp.watch('./*.html', gulp.series(() => { browserSync.reload(); }));
+	gulp.watch('./*.html', gulp.parallel(() => { browserSync.reload(); }));
 	gulp.watch('js/*.js', browserSync.reload);
 	gulp.watch('img/*', browserSync.reload);
 });
@@ -241,4 +246,4 @@ gulp.task('img', () => {
 gulp.task('build', gulp.series('svg-min', 'svg-sprite', 'sass', 'pug', 'scripts-build', 'img', () => { console.log('builded');}))
 
 // основной таск, который запускает вспомогательные
-gulp.task('default', gulp.parallel('watch', 'browser-sync', 'sass', 'pug', 'svg-min', 'svg-sprite', 'scripts', (done) => { console.log('done');}));
+gulp.task('default', gulp.parallel('watch', 'browser-sync', 'sass', 'pug', 'svg-min', 'svg-sprite', 'scripts', () => { console.log('dev start');}));
