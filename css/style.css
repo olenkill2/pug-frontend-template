@@ -2,94 +2,149 @@
 
 /* ********************** */
 
-.asia-exchg {
-  width: 48px;
+.benefits {
+  width: 49px;
   height: 48px;
 }
 
-.banner-arrow {
-  width: 21px;
-  height: 21px;
+.cabinet {
+  width: 44px;
+  height: 44px;
 }
 
-.dvc {
-  width: 300px;
-  height: 49px;
+.calculator {
+  width: 44px;
+  height: 44px;
 }
 
-.europe-exchg {
-  width: 45px;
+.calendar {
+  width: 43px;
   height: 46px;
 }
 
-.featured {
-  width: 16px;
+.cart {
+  width: 50px;
+  height: 50px;
+}
+
+.checkbox-check {
+  width: 13px;
+  height: 11px;
+}
+
+.checked {
+  width: 426.67px;
+  height: 426.67px;
+}
+
+.chevron-red {
+  width: 9px;
+  height: 5px;
+}
+
+.chevron {
+  width: 12px;
+  height: 7px;
+}
+
+.close-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.corporate {
+  width: 66px;
+  height: 50px;
+}
+
+.document {
+  width: 50px;
+  height: 50px;
+}
+
+.download-pdf {
+  width: 28px;
+  height: 32px;
+}
+
+.download {
+  width: 10px;
+  height: 14px;
+}
+
+.eye {
+  width: 18px;
+  height: 12px;
+}
+
+.fb {
+  width: 8px;
+  height: 18px;
+}
+
+.gazprom-big {
+  width: 153px;
+  height: 131px;
+}
+
+.gazprom {
+  width: 34px;
+  height: 58px;
+}
+
+.google {
+  width: 25px;
   height: 16px;
 }
 
-.global-exchg {
-  width: 52px;
-  height: 48px;
+.hft {
+  width: 51px;
+  height: 49px;
 }
 
-.iconexpand {
-  width: 36px;
-  height: 36px;
+.ifwallet172631 {
+  width: 50px;
+  height: 50px;
 }
 
-.index-slider-next {
-  width: 16px;
-  height: 16px;
+.loader {
+  width: 512px;
+  height: 512px;
 }
 
-.index-slider-prev {
-  width: 16px;
-  height: 16px;
-}
-
-.index-telegram {
-  width: 85px;
-  height: 74px;
-}
-
-.input-error {
-  width: 16px;
-  height: 16px;
-}
-
-.ipo1 {
-  width: 185px;
-  height: 85px;
-}
-
-.ipo2 {
-  width: 208px;
-  height: 40px;
-}
-
-.ipo3 {
+.logo-footer {
   width: 152px;
-  height: 84px;
+  height: 41px;
 }
 
-.ipo4 {
-  width: 185px;
-  height: 36px;
+.logo {
+  width: 200px;
+  height: 56px;
 }
 
-.ipo5 {
-  width: 210px;
-  height: 54px;
+.loyalty {
+  width: 46px;
+  height: 39px;
 }
 
-.itiglobal {
-  width: 27px;
-  height: 31px;
+.matrix {
+  width: 211px;
+  height: 50px;
 }
 
-.moscow-exchg {
-  width: 48px;
-  height: 48px;
+.megafone {
+  width: 50px;
+  height: 50px;
+}
+
+.nko {
+  width: 49px;
+  height: 49px;
+}
+
+.pagination-arrow {
+  width: 18px;
+  height: 17px;
 }
 
 .partners1 {
@@ -102,14 +157,104 @@
   height: 44px;
 }
 
+.payment-bank-logo-1 {
+  width: 39px;
+  height: 39px;
+}
+
+.payment-bank-logo-2 {
+  width: 39px;
+  height: 39px;
+}
+
+.payment-bank-logo-3 {
+  width: 45px;
+  height: 43px;
+}
+
+.payment-download {
+  width: 34px;
+  height: 38px;
+}
+
+.payment1 {
+  width: 35px;
+  height: 38px;
+}
+
+.payment2 {
+  width: 33px;
+  height: 34px;
+}
+
+.payment3 {
+  width: 32px;
+  height: 32px;
+}
+
+.phone-black {
+  width: 12px;
+  height: 16px;
+}
+
+.phone-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.phone-red {
+  width: 9px;
+  height: 17px;
+}
+
 .phone {
   width: 12px;
   height: 16px;
 }
 
+.phones {
+  width: 50px;
+  height: 50px;
+}
+
+.presentation-red {
+  width: 215px;
+  height: 96px;
+}
+
+.qiwi {
+  width: 50px;
+  height: 52px;
+}
+
+.raif {
+  width: 50px;
+  height: 50px;
+}
+
 .registration-arrow {
   width: 21px;
   height: 21px;
+}
+
+.registration-arrow__black {
+  width: 21px;
+  height: 21px;
+}
+
+.reliability {
+  width: 56px;
+  height: 56px;
+}
+
+.sber {
+  width: 50px;
+  height: 48px;
+}
+
+.search {
+  width: 18px;
+  height: 18px;
 }
 
 .shape-copy {
@@ -120,6 +265,131 @@
 .slide-4-img {
   width: 165px;
   height: 60px;
+}
+
+.smartcom {
+  width: 214px;
+  height: 38px;
+}
+
+.smarttouch {
+  width: 234px;
+  height: 38px;
+}
+
+.smartweb {
+  width: 210px;
+  height: 38px;
+}
+
+.smartx-download-logo {
+  width: 383px;
+  height: 85px;
+}
+
+.software-main-arrow {
+  width: 21px;
+  height: 21px;
+}
+
+.software-main-mobile {
+  width: 145px;
+  height: 39px;
+}
+
+.software-main-option {
+  width: 169px;
+  height: 28px;
+}
+
+.software-main-smartcom {
+  width: 221px;
+  height: 40px;
+}
+
+.software-main-smartweb {
+  width: 217px;
+  height: 39px;
+}
+
+.software-main-smartx {
+  width: 173px;
+  height: 39px;
+}
+
+.software-smart-gate {
+  width: 217px;
+  height: 40px;
+}
+
+.software1 {
+  width: 64px;
+  height: 64px;
+}
+
+.software2 {
+  width: 56px;
+  height: 64px;
+}
+
+.software3 {
+  width: 64px;
+  height: 59px;
+}
+
+.software4 {
+  width: 64px;
+  height: 64px;
+}
+
+.software5 {
+  width: 64px;
+  height: 64px;
+}
+
+.software6 {
+  width: 64px;
+  height: 64px;
+}
+
+.softwarebot1 {
+  width: 64px;
+  height: 64px;
+}
+
+.softwarebot2 {
+  width: 64px;
+  height: 64px;
+}
+
+.softwarebot3 {
+  width: 64px;
+  height: 64px;
+}
+
+.softwarebot4 {
+  width: 64px;
+  height: 64px;
+}
+
+.softwarebot5 {
+  width: 64px;
+  height: 49px;
+}
+
+.softwarebot6 {
+  width: 64px;
+  height: 64px;
+}
+
+.softwarebot7 {
+  width: 64px;
+  height: 64px;
+}
+
+.softwarebot8 {
+  width: 64px;
+  height: 64px;
 }
 
 .spb-exchg {
@@ -152,9 +422,49 @@
   height: 98px;
 }
 
+.stability {
+  width: 64px;
+  height: 64px;
+}
+
+.strate {
+  width: 151px;
+  height: 41px;
+}
+
+.tech {
+  width: 64px;
+  height: 64px;
+}
+
+.telegram {
+  width: 21px;
+  height: 17px;
+}
+
 .tlg {
   width: 29px;
   height: 24px;
+}
+
+.trading {
+  width: 50px;
+  height: 50px;
+}
+
+.tradingview {
+  width: 19px;
+  height: 19px;
+}
+
+.triangle {
+  width: 26px;
+  height: 23px;
+}
+
+.tw {
+  width: 18px;
+  height: 14px;
 }
 
 .usa-exchg {
@@ -162,9 +472,24 @@
   height: 48px;
 }
 
-.videoplay {
-  width: 97px;
-  height: 97px;
+.vk {
+  width: 20px;
+  height: 11px;
+}
+
+.vue-slider-dot {
+  width: 20px;
+  height: 31px;
+}
+
+.youtube {
+  width: 18px;
+  height: 13px;
+}
+
+.z {
+  width: 19px;
+  height: 19px;
 }
 
 /* base */
