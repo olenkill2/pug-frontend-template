@@ -44,7 +44,8 @@ var jsFiles = [
 gulp.task('scripts', () => {
 	return gulp.src(jsFiles)
 		.pipe(concat('main.min.js'))
-		.pipe(gulp.dest('js')); // Выгружаем в папку app/js
+		.pipe(gulp.dest('js'))
+		.pipe(browserSync.reload({stream: true}))
 });
 
 gulp.task('clean', function () {
@@ -213,8 +214,8 @@ gulp.task('watch', function() {
 	gulp.watch(['img/svg-for-min/*'], {events: ['all']}, gulp.series('svg-min', 'svg-sprite'));
 	gulp.watch('img/svg-for-sprite/*', {events: ['all']}, gulp.series('svg-sprite', 'pug'));
 	gulp.watch('./*.html', gulp.parallel(() => { browserSync.reload(); }));
-	gulp.watch('js/*.js', browserSync.reload);
-	gulp.watch('img/*', browserSync.reload);
+	gulp.watch('js/*.js', gulp.parallel(() => { browserSync.reload(); }));
+	gulp.watch('img/*', gulp.parallel(() => { browserSync.reload(); }));
 });
 
 // таск сжимает картинки без потери качества

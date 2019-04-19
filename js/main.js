@@ -6,6 +6,8 @@
 $(document).ready(function()
 {
 	o2.init();
+	console.log('alah');
+	console.log('new lalah');
 });
 
 /**
